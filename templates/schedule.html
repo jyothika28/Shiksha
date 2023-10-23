@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for ('static',filename='css/user_css.css')}}">
+    <link rel="stylesheet" href="{{ url_for ('static',filename='css/teachingrequest_css.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/side.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/all.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/all.min.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/fontawesome.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/fontawesome.min.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/solid.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/solid.min.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/regular.css')}}">
+      <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+      <script>
+        function getParameterByName(name, url) {
+              if (!url) url = window.location.href;
+              name = name.replace(/[\[\]]/g, '\\$&');
+              var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                  results = regex.exec(url);
+              if (!results) return null;
+              if (!results[2]) return '';
+              return decodeURIComponent(results[2].replace(/\+/g, ' '));
+          }
+      
+          var name = getParameterByName('name');
+          function checkUser()
+          {
+            
+            const button = document.querySelector("#user_name");
+            const u_name = button.innerText;
+            var my_list = [
+            {% for item in adminloop %}
+              "{{ item }}"{% if not loop.last %},{% endif %}
+            {% endfor %}
+          ];
+          
+          
+            if(my_list.includes(u_name)){
+            document.getElementById("manage-user").style.display="block";
+            }
+            else{
+              document.getElementById("manage-user").style.display="none";
+            }
+          }
+      </script>
+           
+  </head>
+
+
+    <body onmouseover="displayclass()">
+      
+            <div class="header">
+                <a class="logo"><img id="img" alt="shiksha" src="../static/images/shiksha-logo.png" ></a>
+              <div class="righty">
+              <div class="dropdown" >
+                  <button class="right_buttons" id="user_name" onmouseover="checkUser()">{{name}}
+
+                  </button>
+                  <div class="dropdown-content">
+                    <a href="/manageusers" id="manage-user">Manage users</a>
+                    <a href="/viewprofile">View profile</a>
+                    <a href="/logout" >
+                      Logout</a>
+                  </div>
+                </div>
+            </div>
+        </div> 
+        <div class="sidebar">
+          <ul>
+            <li><a class="d" href="/sess"><span class="i"><i class="fa fa-bars"></i>&emsp;Dashboard</span></a></li>
+           <li><a href ="/issues"><span class="i" ><i class="fa fa fa-tasks"></i>&emsp;Issues</span></a></li>
+         <li><a class="current" href ="/schedule" onmouseover="displayclass()"><span class="i" ><i class="fa fa-solid fa-chalkboard-teacher"></i>&emsp;Schedule</span></a></li>
+       <li><a href ="/donations"><span class="i" ><i class="fas fa-solid fa-dollar-sign"></i>&emsp;Donations</span></a></li>
+           
+           
+          </ul>
+        </div>
+       
+        <script>
+        $(this).toggleClass("click");
+          $('.sidebar').toggleClass("show");
+    
+    
+          $('.feat-btn').click(function(){
+            $('div ul .feat-show').toggleClass("show");
+            $('div ul .first').toggleClass("rotate");
+          });
+          $('div ul li').click(function(){
+            $(this).addClass("active").siblings().removeClass("active");
+          });
+          function checkUser()
+      {
+        const button = document.querySelector("#user_name");
+            const u_name = button.innerText;
+            var my_list = [
+            {% for item in adminloop %}
+              "{{ item }}"{% if not loop.last %},{% endif %}
+            {% endfor %}
+          ];
+          
+          
+            if(my_list.includes(u_name))
+            {
+            document.getElementById("manage-user").style.display="block";
+            }
+            else{
+              document.getElementById("manage-user").style.display="none";
+            }
+      }
+          
+          function displayForm()
+          {
+            document.getElementById("message-box").style.display="block";
+          }
+          function displayRemoveForm()
+          {
+            document.getElementById("message-box-removeclass").style.display="block";
+          }
+          function closeForm()
+          {
+            document.getElementById("message-box").style.display="none";
+          }
+          function closeForm_remove()
+          {
+            document.getElementById("message-box-removeclass").style.display="none";
+          }
+          
+          function displayclass()
+          {
+            const button = document.querySelector("#user_name");
+            const u_name = button.innerText;
+            var my_list = [
+            {% for item in adminloop %}
+              "{{ item }}"{% if not loop.last %},{% endif %}
+            {% endfor %}
+          ];
+          
+          
+            if(my_list.includes(u_name))
+            {
+            document.getElementById("addclass").style.display="block";
+            document.getElementById("removeclass").style.display="block";
+            }
+            else{
+              document.getElementById("addclass").style.display="none";
+              document.getElementById("removeclass").style.display="none";
+            }
+          }
+        </script>
+
+    
+        <div class="center">
+          <div class="heading">
+            <button style="display: inline-block;" id="addclass" onclick="displayForm()">Add Class</button>
+            <button style="display: inline-block;" id="removeclass" onclick="displayRemoveForm()">Remove Class</button>
+            <div id="message-box">
+              <div id="message-content"></div>
+              <form action="/add_class" method="POST">
+                <h1 class="add_class">Add Class</h1>
+                <div class="input-field"><input placeholder="Enter Subject" name="subject_name" class="validate" required></div><br>
+                
+                <div class="input-field"><input placeholder="Enter Class Date (YYYY-MM-DD)"  name="classdate" class="validate" required></div>
+                <div class="input-field"><input placeholder="Enter Class Time (HH:MM:SS)"  name="classtime" class="validate" required></div>
+                <div class="input-field">
+                  <select name="teacherid" class="validate" required>
+                    <option value="" disabled selected>Enter Teacher ID</option>
+                    {% for y in volunteer_list %}
+            
+          <option  value= "{{y}}">{{y}}</option>"
+              {% endfor %}
+                  </select>
+                </div><div class="input-field">
+                  <select name="grade" class="validate" required>
+                    <option value="" disabled selected>Select Grade</option>
+                    {% for y in grade_list %}
+            
+          <option  value= "{{y}}">{{y}}</option>"
+              {% endfor %}
+                  </select>
+                </div>
+                <div class="input-field">
+                  <select name="shelter" class="validate" required>
+                    <option value="" disabled selected>Select Shelter</option>
+                    {% for y in shelter_list %}
+            
+          <option  value= "{{y}}">{{y}}</option>"
+              {% endfor %}
+                  </select>
+                  </div>
+                <button type="submit" class="last_two_btns" name="submit_class" a href="/add_class">Submit</button>
+                <button class="last_two_btns" onclick="closeForm()">Close</button>
+              </form>
+            </div>
+            </div>
+            <div id="message-box-removeclass">
+              <div id="message-content"></div>
+              <form action="/remove_class" method="POST">
+                <h1 class="remove_class">Remove Class</h1>
+                
+               <div class="input-field">
+                  <select name="classid" class="validate" required>
+                    <option value="" disabled selected>Enter Class ID</option>
+                    {% for y in classid_list %}
+            
+          <option  value= "{{y}}">{{y}}</option>
+              {% endfor %}
+                  </select>
+                </div>
+               
+                <button type="submit" class="last_two_btns" name="submit_class" a href="/remove_class">Submit</button>
+                <button class="last_two_btns" onclick="closeForm_remove()">Close</button>
+              </form>
+            </div>
+            
+            
+            {% for table in tables %}
+            {{ table|safe }}
+            
+        {% endfor %}  
+      
+        </div>
+
+</body>
+</html>

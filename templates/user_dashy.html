@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for ('static',filename='css/user_css.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/side.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/all.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/all.min.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/fontawesome.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/fontawesome.min.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/solid.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/solid.min.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/regular.css')}}">
+      <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+      <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+      <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    </head>
+
+<style>
+  
+#hand{
+    width:40px;
+  }
+
+  p{
+  font-family: 'Roboto';
+  font-weight: 4px;
+  opacity: 4px;
+  font-size: 20px;
+  color:rgb(133, 131, 131);
+}
+    .dropbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+.header{
+  position: -webkit-sticky;
+  position: sticky;
+  top:0;
+  background-color: #fff;
+  bottom: 1px;
+  z-index: -1;
+  /* box-shadow: 0px 1px 0px 1px rgba(219, 214, 214, 0.43); */
+  /*box-shadow:rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;*/
+  /* box-shadow: outset 0 0 .5em .5em rgb(218, 209, 209); */
+}
+.med{
+  margin-left:15%;
+  margin-top: 8%;
+  /* text-transform: uppercase; */
+  font-family: 'Roboto';
+  font-weight: lighter;
+align-items: center;
+text-align: center;
+font-size: 40px;
+font: 'Roboto';
+vertical-align :middle;
+text-align: center;
+}
+
+.header{
+  position: -webkit-sticky;
+  position: sticky;
+  top:0;
+  background-color: #fff;
+  /* bottom: 1px; */
+  z-index: 999;
+  /* box-shadow: 0px 1px 0px 1px rgba(219, 214, 214, 0.43); */
+  /* box-shadow:rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
+  /* box-shadow: outset 0 0 .5em .5em rgb(218, 209, 209); */
+}
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  text-align : center;
+  margin-top: -5px;
+  margin-right: 55px;
+  float: right;
+  /* Edit Margin top, right to move the position of the button*/
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+.righty{
+  margin-top:18px;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #ddd;}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {display: block;}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {background-color: #3e8e41;}
+.d{
+  font-family:'Times New Roman', Times, serif;
+   background-color: white;
+   font-size: 19px;
+   font-weight: bold;
+   /* padding-left: 20px; */
+}
+@media screen and (width:1920px){
+.d{
+  font-family:'Times New Roman', Times, serif;
+   background-color: #ffff;
+   font-size: 26px;
+   font-weight: bold;
+   /* padding-left: 20px; */
+}}
+</style>
+    <body>
+        
+            <div class="header">
+                <a class="logo"><img id="img" alt="Shiksha" src="../static/images/shiksha-logo.png" ></a>
+                <!--<div class="header-right">
+                  <a class="active" href="#home">Home</a>
+                  <a href="#contact">Contact</a>
+                  <a href="#about">About</a>
+              </div>-->
+              <div class="righty">
+              <!--<a href="#"><button class="right_buttons">About</button></a>-->
+              <div class="dropdown" >
+                  <button class="right_buttons" id="user_name"  onmouseover="checkUser()">{{name}}</button></a>
+                  <div class="dropdown-content">
+                    <a href="/manageusers" id="manage-user">Manage users</a>
+                      <a href="/viewprofile">View Profile</a>
+                      <a href="/logout">Logout</a>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar">
+          <ul>
+            <li><a class="d" href="/sess"><span class="i"><i class="fa fa-bars"></i>&emsp;Dashboard</span></a></li>
+           <li><a href ="/issues"><span class="i" ><i class="fa fa fa-tasks"></i>&emsp;Issues</span></a></li>
+           <li><a href ="/schedule"><span class="i" ><i class="fa fa-solid fa-chalkboard-teacher"></i>&emsp;Schedule</span></a></li>
+          <li><a href ="/donations"><span class="i" ><i class="fas fa-solid fa-dollar-sign"></i>&emsp;Donations</span></a></li>
+           
+    
+         
+    </div>
+    
+
+    <script>
+      $('.feat-btn').click(function(){
+        $('div ul .feat-show').toggleClass("show");
+        $('div ul .first').toggleClass("rotate");
+      });
+
+      $('div ul li').click(function(){
+        $(this).addClass("active").siblings().removeClass("active");
+      });
+      function checkUser()
+      {
+        const button = document.querySelector("#user_name");
+            const u_name = button.innerText;
+            var my_list = [
+            {% for item in adminloop %}
+              "{{ item }}"{% if not loop.last %},{% endif %}
+            {% endfor %}
+          ];
+          
+          
+            if(my_list.includes(u_name))
+            {
+            document.getElementById("manage-user").style.display="block";
+            }
+            else{
+              document.getElementById("manage-user").style.display="none";
+            }
+      }
+    </script>
+
+    <div class="container">
+      <div class="med">
+
+        <img id="hand" src="/static/images/hand-wave.jpg"></img>
+        Hello {{name}}!!
+        <br> 
+        <p>Welcome to Shiksha</p> 
+      </div>
+    </div>
+
+
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for ('static',filename='css/user_css.css')}}">
+    <link rel="stylesheet" href="{{ url_for ('static',filename='css/issues_css.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/side.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/all.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/all.min.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/fontawesome.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/fontawesome.min.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/solid.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/solid.min.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/regular.css')}}">
+      <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+  </head>
+
+    <body onmouseover="resolvebutton()" >
+        
+            <div class="header">
+                <a  class="logo"><img id="img" alt="Shiksha" src="../static/images/shiksha-logo.png" ></a>
+              
+              <div class="righty">
+            
+              <div class="dropdown" >
+                  <button class="right_buttons" id="user_name" onmouseover="checkUser()">
+                    {{name}}
+                  </button></a>
+                  <div class="dropdown-content">
+                    <a href="/manageusers" id="manage-user">Manage users</a>
+                    <a href="/viewprofile">View profile</a>
+                    <a href="/logout" >
+                      Logout</a>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar">
+          <ul>
+            <li><a class="d" href="/sess"><span class="i"><i class="fa fa-bars"></i>&emsp;Dashboard</span></a></li>
+            <li><a class="current" href ="/issues" onmouseover="resolvebutton()"><span class="i" ><i class="fa fa fa-tasks"></i>&emsp;Issues</span></a></li>
+          <li><a href ="/schedule"><span class="i" ><i class="fa fa-solid fa-chalkboard-teacher"></i>&emsp;Schedule</span></a></li>
+         <li><a href ="/donations"><span class="i" ><i class="fas fa-solid fa-dollar-sign"></i>&emsp;Donations</span></a></li>
+           
+
+        </div>
+       
+        <script>
+        $(this).toggleClass("click");
+          $('.sidebar').toggleClass("show");
+    
+    
+          $('.feat-btn').click(function(){
+            $('div ul .feat-show').toggleClass("show");
+            $('div ul .first').toggleClass("rotate");
+          });
+          $('div ul li').click(function(){
+            $(this).addClass("active").siblings().removeClass("active");
+          });
+          function displayForm()
+          {
+            document.getElementById("message-box").style.display="block";
+          }
+          function resolveForm()
+          {
+            document.getElementById("message-box-resolve").style.display="block";
+          }
+          function closeForm()
+          {
+            document.getElementById("message-box").style.display="none";
+          }
+          function closeResolveForm()
+          {
+            document.getElementById("message-box-resolve").style.display="none";
+          }
+          function resolvebutton()
+          {
+            const button = document.querySelector("#user_name");
+            const u_name = button.innerText;
+            var my_list = [
+            {% for item in adminloop %}
+              "{{ item }}"{% if not loop.last %},{% endif %}
+            {% endfor %}
+          ];
+          
+          
+            if(my_list.includes(u_name))
+            {
+            document.getElementById("resolve").style.display="block";
+            }
+            else{
+              document.getElementById("resolve").style.display="none";
+            }
+          }
+          function checkUser()
+      {
+        const button = document.querySelector("#user_name");
+            const u_name = button.innerText;
+            var my_list = [
+            {% for item in adminloop %}
+              "{{ item }}"{% if not loop.last %},{% endif %}
+            {% endfor %}
+          ];
+          
+          
+            if(my_list.includes(u_name))
+            {
+            document.getElementById("manage-user").style.display="block";
+            }
+            else{
+              document.getElementById("manage-user").style.display="none";
+            }
+      }
+        </script>
+
+    <div class="center" onmouseover="resolveButton()">
+      <div class="heading" onmouseover="resolveButton()">
+        <button id="addissue" onclick="displayForm()">Add Issue</button>
+        <button id="resolve" onclick="resolveForm()">Resolve</button>
+        <div id="message-box">
+          <div id="message-content"></div>
+          <form action="/add_issue" method="POST">
+            <h1 class="add_issue">Add Issue</h1>
+            <div class="input-field"><input placeholder="Subject" name="subject" class="validate" required></div><br>
+            <div class="input-field"><textarea placeholder="Description"  name="desc" class="validate"></textarea></div>
+            <div class="input-field">
+              <select name="reportedby" class="validate" required>
+                <option value="" disabled selected>Reported By</option>
+                {% for y in volunteer_list %}
+        
+      <option  value= "{{y}}">{{y}}</option>"
+          {% endfor %}
+              </select>
+            </div>
+            <div class="input-field">
+              <select name="childid" class="validate" required>
+                <option value="" disabled selected>Enter Child ID</option>
+                {% for y in children_list %}
+        
+      <option  value= "{{y}}">{{y}}</option>"
+          {% endfor %}
+              </select>
+            </div>
+            <button type="submit" class="last_two_btns" name="submit_issue" a href="/add_issue">Submit</button>
+            <button class="last_two_btns" onclick="closeForm()">Close</button>
+          </form>
+        </div>
+        <div id="message-box-resolve">
+          <div id="message-content"></div>
+          <form action="/resolve_issue" method="POST">
+            <h1 class="resolve_issue">Resolve Issue</h1>
+            <div class="input-field">
+              <select name="reportid" class="validate" required>
+                <option value="" disabled selected>Enter Report ID</option>
+                {% for y in reportid_list %}
+        
+      <option  value= "{{y}}">{{y}}</option>"
+          {% endfor %}
+              </select>
+            </div>
+            <div class="input-field">
+            <select name="status" class="validate" required>
+              <option value="" disabled selected>Select Status</option>
+              <option value="underinvest">Under Investigation</option>
+              <option value="closed">Closed</option>
+            </select>
+            </div>
+            <button type="submit" class="last_two_btns" name="submit_issue" a href="/resolve_issue">Submit</button>
+            <button class="last_two_btns" onclick="closeResolveForm()">Close</button>
+          </form>
+        </div>
+        </div>
+        
+        {% for table in tables %}
+        {{ table|safe }}
+    {% endfor %} 
+    </div>
+    
+
+
+
+
+
+</body>
+</html>

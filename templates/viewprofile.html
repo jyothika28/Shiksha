@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for ('static',filename='css/user_css.css')}}">
+    <link rel="stylesheet" href="{{ url_for ('static',filename='css/viewprofile_css.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/side.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/all.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/all.min.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/fontawesome.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/fontawesome.min.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/solid.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/solid.min.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/regular.css')}}">
+      <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+      <script>
+        function getParameterByName(name, url) {
+              if (!url) url = window.location.href;
+              name = name.replace(/[\[\]]/g, '\\$&');
+              var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                  results = regex.exec(url);
+              if (!results) return null;
+              if (!results[2]) return '';
+              return decodeURIComponent(results[2].replace(/\+/g, ' '));
+          }
+      
+          var name = getParameterByName('name');
+      </script>
+           
+  </head>
+
+
+    <body>
+      
+            <div class="header">
+                <a class="logo"><img id="img" alt="Shiksha" src="../static/images/shiksha-logo.png" ></a>
+              <div class="righty">
+              <div class="dropdown" >
+                  <button class="right_buttons" id="user_name" onmouseover="checkUser()">{{name}}
+
+                  </button></a>
+                  <div class="dropdown-content">
+                    <a href="/manageusers" id="manage-user">Manage users</a>
+                    <a href="/viewprofile">View Profile</a>
+                      <a href="/logout">Logout</a>
+                  </div>
+                </div>
+            </div>
+        </div> 
+        <div class="sidebar">
+          <ul>
+            <li><a class="d" href="/sess"><span class="i"><i class="fa fa-bars"></i>&emsp;Dashboard</span></a></li>
+           <li><a href ="/issues"><span class="i" ><i class="fa fa fa-tasks"></i>&emsp;Issues</span></a></li>
+          <li><a href ="/schedule"><span class="i" ><i class="fa fa-solid fa-chalkboard-teacher"></i>&emsp;Schedule</span></a></li>
+       <li><a href ="/donations"><span class="i" ><i class="fas fa-solid fa-dollar-sign"></i>&emsp;Donations</span></a></li>
+           
+           
+          </ul>
+        </div>
+       
+        <script>
+        $(this).toggleClass("click");
+          $('.sidebar').toggleClass("show");
+    
+    
+          $('.feat-btn').click(function(){
+            $('div ul .feat-show').toggleClass("show");
+            $('div ul .first').toggleClass("rotate");
+          });
+          $('div ul li').click(function(){
+            $(this).addClass("active").siblings().removeClass("active");
+          });
+          function checkUser()
+      {
+            const button = document.querySelector("#user_name");
+            const u_name = button.innerText;
+
+            if(u_name=="Max Davids" || u_name=="Anushka Patel" || u_name=="Gertrude	Peters")
+            {
+            document.getElementById("manage-user").style.display="block";
+            }
+            else{
+              document.getElementById("manage-user").style.display="none";
+            }
+      }
+        </script>
+          <div class="center">
+            <div clas="circle">
+          <div class="card">
+            <div class="card-header">
+                <img src="../static/images/user-icon.png" alt="Profile Image" class="profile-img">
+            </div>
+            <div class="card-body">
+                <p class="name">{{name}}</p>
+                <p class="id">Staff ID : {{staffid}}</p>
+                <a href="#" class="mail">{{email}}</a>
+                <p class="job">Department: {{dept}}</p>
+                
+            </div>
+            <br>
+            <div class="card-footer">
+                <p class="count"><span>Joined since {{doj.year}} </span></p>
+            </div>
+        </div>
+        </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for ('static',filename='css/user_css.css')}}">
+    <link rel="stylesheet" href="{{ url_for ('static',filename='css/manageusers_css.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/side.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/all.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/all.min.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/fontawesome.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/fontawesome.min.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/solid.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/solid.min.css')}}">
+      <link rel="stylesheet" href="{{ url_for ('static',filename='css/regular.css')}}">
+      <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+      <script>
+        function getParameterByName(name, url) {
+              if (!url) url = window.location.href;
+              name = name.replace(/[\[\]]/g, '\\$&');
+              var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+                  results = regex.exec(url);
+              if (!results) return null;
+              if (!results[2]) return '';
+              return decodeURIComponent(results[2].replace(/\+/g, ' '));
+          }
+      
+          var name = getParameterByName('name');
+      </script>
+           
+  </head>
+
+
+    <body>
+      
+            <div class="header">
+                <a href="/red" class="logo"><img id="img" alt="shiksha" src="../static/images/shiksha-logo.png" ></a>
+              <div class="righty">
+              <div class="dropdown" >
+                  <button class="right_buttons">{{name}}
+
+                  </button></a>
+                  <div class="dropdown-content">
+                    <a href="/manageusers">Manage users</a>
+                    <a href="/viewprofile">View profile</a>
+                    <a href="/logout" >
+                      Logout</a>
+                  </div>
+                </div>
+            </div>
+        </div> 
+        <div class="sidebar">
+          <ul>
+            <li><a class="d" href="/sess"><span class="i"><i class="fa fa-bars"></i>&emsp;Dashboard</span></a></li>
+           <li><a href ="/issues"><span class="i" ><i class="fa fa fa-tasks"></i>&emsp;Issues</span></a></li>
+          <li><a href ="/schedule"><span class="i" ><i class="fa fa-solid fa-chalkboard-teacher"></i>&emsp;Schedule</span></a></li>
+       <li><a href ="/donations"><span class="i" ><i class="fas fa-solid fa-dollar-sign"></i>&emsp;Donations</span></a></li>
+           
+           
+          </ul>
+        </div>
+       
+        <script>
+        $(this).toggleClass("click");
+          $('.sidebar').toggleClass("show");
+    
+    
+          $('.feat-btn').click(function(){
+            $('div ul .feat-show').toggleClass("show");
+            $('div ul .first').toggleClass("rotate");
+          });
+          $('div ul li').click(function(){
+            $(this).addClass("active").siblings().removeClass("active");
+          });
+          function displayForm()
+          {
+            document.getElementById("message-box").style.display="block";
+          }
+          function updateForm()
+          {
+            document.getElementById("message-box-update").style.display="block";
+            
+          }
+          function closeForm()
+          {
+            document.getElementById("message-box").style.display="none";
+          }
+          function closeFormUpdate()
+          {
+            document.getElementById("message-box-update").style.display="none";
+          }
+          function checkUser()
+            {
+              const button = document.querySelector("#user_name");
+              const u_name = button.innerText;
+              var my_list = [
+              {% for item in adminloop %}
+                "{{ item }}"{% if not loop.last %},{% endif %}
+              {% endfor %}
+            ];
+            
+            
+              if(my_list.includes(u_name))
+            {
+            document.getElementById("manage-user").style.display="block";
+            }
+            else{
+              document.getElementById("manage-user").style.display="none";
+            }
+            }
+            function closeFormRemove()
+            {
+              document.getElementById("message-box-remove").style.display="none";
+            }
+            function remove()
+            {
+              document.getElementById("message-box-remove").style.display="block";
+            }
+        </script>
+
+        <div class="center">
+            <div class="heading">
+        
+              <button   style="display: inline-block;" id="adduser" onclick="displayForm()">Add User</button>
+              <button   style="display: inline-block;" id="update" href="/update_user" onclick="updateForm()">Update</button>
+              <button   style="display: inline-block;" id="update1" href="/remove_user" onclick="remove()">Remove</button>
+              
+              <div id="message-box">
+                <div id="message-content"></div>
+                <form action="/add_user" method="POST">
+                  <h1 class="add_user">Add User</h1><br>
+                  <div class="input-field"><input placeholder="Enter Staff ID" type="text" name="staffid" class="validate" required></div>
+                  <div class="input-field"><input placeholder="Enter First Name" type="text" name="fname" class="validate" required></div>
+                  <div class="input-field"><input placeholder="Enter Last Name" type="text" name="lname" class="validate" required></div>
+                  <div class="input-field"><input placeholder="Enter Email" type="text" name="email" class="validate" required></div>
+                  <div class="input-field"><input placeholder="Enter Username" type="text" name="username" class="validate" required></div>
+                  <div class="input-field"><input placeholder="Enter Password" type="text" name="password" class="validate" required></div>
+                  <div class="input-field"><input placeholder="Enter Age(>18)" type="number" name="age" class="validate" required></div>
+                  <div class="input-field"><input placeholder="Enter Contact No" type="number" name="contactno" class="validate" required></div>
+                  <div class="input-field">
+                    <select name="department" class="validate" required>
+                        <option value="" disabled selected>Select Department</option>
+                      {% for y in dept_list %}
+                      
+                    <option  value= "{{y}}">{{y}}</option>"
+                        {% endfor %}
+    
+                    </select>
+                    </div>
+                    <div class="input-field">
+                        <select name="city" class="validate" required>
+                          <option value="" disabled selected>Select City</option>
+                          {% for y in city_list %}
+                      
+                        <option  value= "{{y}}">{{y}}</option>"
+                        {% endfor %}
+                        </select>
+                        </div>
+                        <div class="input-field">
+                            <select name="shelter" class="validate" required>
+                              <option value="" disabled selected>Select Shelter</option>
+                              {% for y in shelter_list %}
+                      
+                    <option  value= "{{y}}">{{y}}</option>"
+                        {% endfor %}
+                            </select>
+                            </div>
+                  <button type="submit" class="last_two_btns" name="submit_issue" a href="/add_user">Submit</button>
+                  <button class="last_two_btns" onclick="closeForm()">Close</button>
+                </form>
+              </div>
+              <div id="message-box-update">
+                <div id="message-content"></div>
+                <form action="/update_user" method="POST">
+                  <h1 class="add_user">Update User</h1><br>
+                  <div class="input-field">
+                    <select name="staffid" class="validate" required>
+                      <option value="" disabled selected>Select Staff ID</option>
+                    {% for y in staffid_list %}
+                    
+                  <option  value= "{{y}}">{{y}}</option>"
+                      {% endfor %}
+  
+                  </select>
+                    </div>
+                    <div class="input-field">
+                      <select name="update_column" class="validate" required>
+                        <option value="" disabled selected>Select Column</option>
+                        <option value="email_address">Email</option>
+                        <option value="contact_no">Contact No</option>
+                    </select>
+                      </div>
+                      <div class="input-field"><input placeholder="Enter New value" type="text" name="updated_value" class="validate" required></div>
+                  
+                     <button type="submit" class="last_two_btns" name="submit_details" a href="/update_user">Submit</button>
+                  <button class="last_two_btns" onclick="closeFormUpdate()">Close</button>
+                </form>
+              </div>
+              <div id="message-box-remove">
+                <div id="message-content"></div>
+                <form action="/remove_user" method="POST">
+                  <h1 class="add_user">Remove User</h1><br>
+                 <div class="input-field">
+                    <select name="staffid" class="validate" required>
+                      <option value="" disabled selected>Select Staff ID</option>
+                    {% for y in staffid_list %}
+                    
+                  <option  value= "{{y}}">{{y}}</option>"
+                      {% endfor %}
+  
+                  </select>
+                    </div>
+                    <button type="submit" class="last_two_btns" name="submit_details" a href="/remove_user">Submit</button>
+                  <button class="last_two_btns" onclick="closeFormRemove()">Close</button>
+                </form>
+              </div>
+              </div>
+              
+              {% for table in tables %}
+              {{ table|safe }}
+              
+          {% endfor %}  
+          </div>
+</body>
+</html>
